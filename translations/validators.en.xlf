@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="comment.is_spam">
+                <source>comment.is_spam</source>
+                <target>The content of this comment is considered spam.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

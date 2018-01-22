@@ -1,0 +1,106 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block body_id 'admin_dashboard_index' %}
+
+{% block main %}
+<div>
+    <h1>{{ 'title.company_stock_overview'|trans }}</h1>
+    {% for card in cards %}
+        {% for key, stocks in card.stocks %}
+        <div class="tp_card">
+        <div class="tp_card_header">
+            <h4>{{ card.name }}</h4>
+            <h6>{{ key }}</h6>
+        </div>
+    
+        <table class="table">
+            <tbody>
+            {% for stock in stocks %}
+            <tr>
+                <td>{{ stock.exchange }}</td>
+                <td>€{{ stock.price }}</td>
+            </tr>
+            {% else %}
+                <div class="well">{{ 'data.no_data_found'|trans }}</div>
+            {% endfor %}
+            </tbody>
+        </table>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="well">{{ 'data.no_data_found'|trans }}</div>
+    {% endfor %}
+</div>
+
+<div>
+    <h1>{{ 'title.exchange_stock_overview'|trans }}</h1> 
+    {% for exchange in exchanges %}
+    <h4>{{ exchange.name }}</h4>
+    <table class="table">
+        <tbody>
+        <th>Company Name</th>
+        <th>Stock Type</th>
+        <th>Price entered date</th>
+        <th>Price entered time</th>
+        <th>Price</th>
+        {% for stock in exchange.stocks %}
+        <tr>
+            <td>{{ stock.company.name }}</td>
+            <td>{{ stock.type.name }}</td>
+            <td>{{ stock.createdAt|date("d.m.Y") }}</td>
+            <td>{{ stock.createdAt|date("H:i") }}</td>
+            <td>€{{ stock.price }}</td>
+        </tr>
+        {% else %}
+            <div class="well">{{ 'data.no_data_found'|trans }}</div>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <div class="well">{{ 'data.no_data_found'|trans }}</div>
+    {% endfor %}
+</div>
+<div>
+    <h1>{{ 'title.exchange_market_highest_stock'|trans }}</h1>
+    {% for highestStock in highestStockRepo %}
+        <div class="tp_card">
+        <table class="table">
+            <tbody>
+            <tr>
+                <td>{{ highestStock.company.name }}</td>
+            </tr>
+            <tr>
+                <td>{{ highestStock.type.name }}</td>
+            </tr>
+            <tr>
+                <td><b>€{{ highestStock.price }}</b></td>
+            </tr>
+            <tr>
+                <td>{{ highestStock.exchangeMarket.name }}</td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
+    {% else %}
+        <div class="well">{{ 'data.no_data_found'|trans }}</div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block sidebar %}
+    <div class="section actions">
+        <a href="{{ path('admin_company_new') }}" class="btn btn-lg btn-block btn-success">
+            <i class="fa fa-plus" aria-hidden="true"></i> {{ 'action.create_company'|trans }}
+        </a>
+        <a href="{{ path('admin_exchange_new') }}" class="btn btn-lg btn-block btn-success">
+            <i class="fa fa-plus" aria-hidden="true"></i> {{ 'action.create_exchange'|trans }}
+        </a>
+        <a href="{{ path('admin_stock_new') }}" class="btn btn-lg btn-block btn-success">
+            <i class="fa fa-plus" aria-hidden="true"></i> {{ 'action.create_stock'|trans }}
+        </a>
+    </div>
+
+    {{ parent() }}
+
+    {{ show_source_code(_self) }}
+{% endblock %}
